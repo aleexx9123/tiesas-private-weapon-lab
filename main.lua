@@ -8,7 +8,7 @@ local StarterGui = game:GetService("StarterGui")
 local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
 
-local LAB_VERSION = "1.2.0"
+local LAB_VERSION = "1.3.0"
 
 local localPlayer = Players.LocalPlayer
 if not localPlayer then return end
@@ -31,10 +31,9 @@ end
 
 if not isPrivateServer then
 	notify(
-		"Arsenal privado v" .. LAB_VERSION,
-		"Roblox informa que este es un servidor público (ID privado vacío)."
+		"Arsenal local v" .. LAB_VERSION,
+		"Roblox no expone el ID privado; se activa el modo local seguro."
 	)
-	return
 end
 
 local environment = type(getgenv) == "function" and getgenv() or _G
