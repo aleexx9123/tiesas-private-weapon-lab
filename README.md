@@ -1,10 +1,10 @@
 # Tiesas Private Weapon Lab
 
 Menú universal de pruebas visuales para experiencias Murder de Roblox, limitado
-al propietario de un servidor privado. Funciona sin una lista fija de
-`GameId`, por lo que puede usarse en MM2, MMV, Murder Mystery Kids, MM Kids y
-otras variantes que expongan modelos compatibles. Las armas se crean únicamente
-en el cliente, no pueden atacar y no se guardan en el inventario.
+a servidores privados. Funciona sin una lista fija de `GameId`, por lo que puede
+usarse en MM2, MMV, Murder Mystery Kids, MM Kids y otras variantes que expongan
+modelos compatibles. Las armas se crean únicamente en el cliente, no pueden
+atacar y no se guardan en el inventario.
 
 ## Loadstring
 
@@ -14,8 +14,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/aleexx9123/tiesas-pri
 
 ## Restricciones de seguridad
 
-- Requiere un servidor privado con propietario (`PrivateServerOwnerId`).
-- Solo funciona cuando el jugador local es ese propietario.
+- Requiere un servidor privado (`PrivateServerId`).
+- Funciona para cualquier jugador que esté dentro de ese servidor privado.
 - No restringe la experiencia por nombre, creador ni `GameId`.
 - No llama a `FireServer`, `InvokeServer`, DataStore ni sistemas de inventario.
 - Elimina scripts y remotos de cada modelo antes de colocarlo en la mochila.
