@@ -9,13 +9,15 @@ atacar y no se guardan en el inventario.
 ## Loadstring
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/aleexx9123/tiesas-private-weapon-lab/main/main.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aleexx9123/tiesas-private-weapon-lab/main/loader.lua?cache=" .. tostring(os.time()), false))()
 ```
 
 ## Restricciones de seguridad
 
 - Requiere un servidor privado (`PrivateServerId`).
 - Funciona para cualquier jugador que esté dentro de ese servidor privado.
+- También reconoce servidores VIP mediante `PrivateServerOwnerId` y pruebas en
+  Roblox Studio; el loader desactiva la caché para no ejecutar versiones antiguas.
 - No restringe la experiencia por nombre, creador ni `GameId`.
 - No llama a `FireServer`, `InvokeServer`, DataStore ni sistemas de inventario.
 - Elimina scripts y remotos de cada modelo antes de colocarlo en la mochila.
