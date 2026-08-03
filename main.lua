@@ -1,6 +1,6 @@
 -- Tiesas Private Weapon Lab
--- Vista previa universal, local y temporal para el propietario de un servidor
--- privado. No restringe el juego por nombre, creador ni GameId.
+-- Vista previa universal, local y temporal para cualquier jugador dentro de
+-- un servidor privado. No restringe el juego por nombre, creador ni GameId.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -10,9 +10,7 @@ local CoreGui = game:GetService("CoreGui")
 local localPlayer = Players.LocalPlayer
 if not localPlayer then return end
 
-local isPrivateOwner = game.PrivateServerId ~= ""
-	and game.PrivateServerOwnerId ~= 0
-	and game.PrivateServerOwnerId == localPlayer.UserId
+local isPrivateServer = game.PrivateServerId ~= ""
 
 local function notify(title, message)
 	pcall(function()
@@ -24,10 +22,10 @@ local function notify(title, message)
 	end)
 end
 
-if not isPrivateOwner then
+if not isPrivateServer then
 	notify(
 		"Arsenal privado",
-		"Solo funciona para el propietario de un servidor privado."
+		"Solo funciona dentro de un servidor privado."
 	)
 	return
 end
@@ -264,7 +262,7 @@ subtitle.BackgroundTransparency = 1
 subtitle.Position = UDim2.fromOffset(20, 48)
 subtitle.Size = UDim2.new(1, -40, 0, 36)
 subtitle.Font = Enum.Font.Gotham
-subtitle.Text = "Vista previa local · propietario del servidor privado"
+subtitle.Text = "Vista previa local · cualquier jugador del servidor privado"
 subtitle.TextColor3 = Color3.fromRGB(178, 165, 200)
 subtitle.TextSize = 13
 subtitle.TextWrapped = true
