@@ -3,7 +3,7 @@
 
 local TARGET_GAME_ID = 10354852672
 local TARGET_PLACE_ID = 116924926476457
-local VERSION = "1.0.0"
+local VERSION = "1.1.0"
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -21,7 +21,9 @@ local function notify(message)
 	end)
 end
 
-if game.GameId ~= TARGET_GAME_ID and game.PlaceId ~= TARGET_PLACE_ID then
+-- Both identifiers must match. Using `and` here would allow a different place
+-- in the universe (or an unrelated universe reusing an expected place check).
+if game.GameId ~= TARGET_GAME_ID or game.PlaceId ~= TARGET_PLACE_ID then
 	notify("Este script solo funciona en la experiencia MMV autorizada.")
 	return
 end
@@ -30,8 +32,11 @@ local remotes = ReplicatedStorage:FindFirstChild("Remotes")
 local inventory = remotes and remotes:FindFirstChild("Inventory")
 local equipRemote = inventory and inventory:FindFirstChild("Equip")
 local getProfileRemote = inventory and inventory:FindFirstChild("GetProfileData")
+local database = ReplicatedStorage:FindFirstChild("Database")
+local syncModule = database and database:FindFirstChild("Sync")
 if not equipRemote or not equipRemote:IsA("RemoteEvent")
-	or not getProfileRemote or not getProfileRemote:IsA("RemoteFunction") then
+	or not getProfileRemote or not getProfileRemote:IsA("RemoteFunction")
+	or not syncModule or not syncModule:IsA("ModuleScript") then
 	notify("No se encontraron los remotos esperados de MMV.")
 	return
 end
@@ -42,6 +47,20 @@ local targets = {
 	{label = "Voidscope", id = "Voidscope", itemType = "Gun"},
 	{label = "Ban Hammer", id = "BanHammer", itemType = "Knife"},
 }
+
+-- Confirm the MMV catalogue schema as well as the IDs. This prevents the PoC
+-- from running merely because another experience copied the remote names.
+local syncOk, sync = pcall(require, syncModule)
+if not syncOk or type(sync) ~= "table" or type(sync.Weapons) ~= "table" then
+	notify("El catálogo de esta sesión no coincide con MMV.")
+	return
+end
+for _, target in ipairs(targets) do
+	if sync.Weapons[target.id] == nil then
+		notify("Falta el ID MMV esperado: " .. target.id .. ".")
+		return
+	end
+end
 
 local environment = type(getgenv) == "function" and getgenv() or _G
 local previous = environment.TIESAS_MMV_SECURITY_TEST
