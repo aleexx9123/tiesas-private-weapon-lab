@@ -6,11 +6,18 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StarterGui = game:GetService("StarterGui")
 local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
+
+local LAB_VERSION = "1.2.0"
 
 local localPlayer = Players.LocalPlayer
 if not localPlayer then return end
 
-local isPrivateServer = game.PrivateServerId ~= ""
+local privateServerId = tostring(game.PrivateServerId or "")
+local privateServerOwnerId = tonumber(game.PrivateServerOwnerId) or 0
+local isPrivateServer = privateServerId ~= ""
+	or privateServerOwnerId ~= 0
+	or RunService:IsStudio()
 
 local function notify(title, message)
 	pcall(function()
@@ -24,8 +31,8 @@ end
 
 if not isPrivateServer then
 	notify(
-		"Arsenal privado",
-		"Solo funciona dentro de un servidor privado."
+		"Arsenal privado v" .. LAB_VERSION,
+		"Roblox informa que este es un servidor público (ID privado vacío)."
 	)
 	return
 end
@@ -339,4 +346,4 @@ track(screenGui.AncestryChanged:Connect(function(_, parent)
 	if not parent then runtime.stop() end
 end))
 
-notify("Arsenal privado", "Laboratorio local cargado.")
+notify("Arsenal privado v" .. LAB_VERSION, "Laboratorio local cargado.")
