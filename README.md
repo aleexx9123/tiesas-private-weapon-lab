@@ -20,10 +20,22 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/aleexx9123/tiesas-pri
 - También reconoce servidores VIP mediante `PrivateServerOwnerId` y pruebas en
   Roblox Studio; el loader desactiva la caché para no ejecutar versiones antiguas.
 - No restringe la experiencia por nombre, creador ni `GameId`.
-- No llama a `FireServer`, `InvokeServer`, DataStore ni sistemas de inventario.
+- El laboratorio visual principal no llama a `FireServer`, `InvokeServer`,
+  DataStore ni sistemas de inventario.
 - Elimina scripts y remotos de cada modelo antes de colocarlo en la mochila.
 - Las copias desaparecen al salir o al cerrar el laboratorio.
 
 El script busca modelos compatibles en `ReplicatedStorage` y `Workspace`. Los
 nombres reconocidos incluyen Corrupt azul/Blue Corrupt, Luger azul/Blue Luger,
 Voidscope/Void Scope y Ban Hammer.
+
+## PoC del remoto de MMV
+
+Esta prueba está limitada al universo `10354852672` y al lugar
+`116924926476457`. Comprueba si `Remotes.Inventory.Equip` permite equipar
+`Premium_K`, `Premium_G`, `Voidscope` o `BanHammer` sin que la entrada exista en
+`Weapons.Owned`. No añade armas al inventario ni guarda datos.
+
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aleexx9123/tiesas-private-weapon-lab/main/mmv-loader.lua?cache=" .. tostring(os.time()), false))()
+```
